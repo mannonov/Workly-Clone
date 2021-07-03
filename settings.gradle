@@ -1,2 +1,3 @@
 rootProject.name = "Workly Clone"
 include ':app'
+include ':mylibrary'
