@@ -1,0 +1,2 @@
+rootProject.name = "Workly Clone"
+include ':app'
