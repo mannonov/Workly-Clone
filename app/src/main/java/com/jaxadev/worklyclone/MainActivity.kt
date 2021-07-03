@@ -3,7 +3,6 @@ package com.jaxadev.worklyclone
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import com.jaxadev.mylibrary.PatternLockView
 import com.jaxadev.mylibrary.listener.PatternLockViewListener
 import com.jaxadev.mylibrary.utils.PatternLockUtils

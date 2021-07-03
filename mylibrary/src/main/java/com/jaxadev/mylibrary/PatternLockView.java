@@ -3,6 +3,7 @@ package com.jaxadev.mylibrary;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -15,6 +16,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -90,7 +92,7 @@ public class PatternLockView extends View {
         int WRONG = 2;
     }
 
-    private static final int DEFAULT_PATTERN_DOT_COUNT = 3;
+    private static final int DEFAULT_PATTERN_DOT_COUNT = 5;
     private static final boolean PROFILE_DRAWING = false;
 
     /**
@@ -133,6 +135,7 @@ public class PatternLockView extends View {
     private List<PatternLockViewListener> mPatternListeners;
     // The pattern represented as a list of connected {@link Dot}
     private ArrayList<Dot> mPattern;
+
 
     /**
      * Lookup table for the dots of the pattern we are currently drawing.
@@ -273,6 +276,7 @@ public class PatternLockView extends View {
         setMeasuredDimension(newWidth, newHeight);
     }
 
+    @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
         ArrayList<Dot> pattern = mPattern;
@@ -290,6 +294,7 @@ public class PatternLockView extends View {
                 Dot dot = pattern.get(i);
                 drawLookupTable[dot.mRow][dot.mColumn] = true;
             }
+
 
             boolean needToUpdateInProgressPoint = numCircles > 0
                     && numCircles < patternSize;
@@ -337,15 +342,47 @@ public class PatternLockView extends View {
             boolean anyCircles = false;
             float lastX = 0f;
             float lastY = 0f;
+
+            ArrayList<Integer> integerArrayList = new ArrayList<>(16);
+
+            integerArrayList.add(0);
+            integerArrayList.add(1);
+            integerArrayList.add(23);
+            integerArrayList.add(5);
+            integerArrayList.add(6);
+            integerArrayList.add(8);
+            integerArrayList.add(9);
+            integerArrayList.add(10);
+            integerArrayList.add(11);
+            integerArrayList.add(13);
+            integerArrayList.add(14);
+            integerArrayList.add(15);
+            integerArrayList.add(16);
+            integerArrayList.add(18);
+            integerArrayList.add(19);
+            integerArrayList.add(24);
+
+
             for (int i = 0; i < patternSize; i++) {
                 Dot dot = pattern.get(i);
 
                 // Only draw the part of the pattern stored in
                 // the lookup table (this is only different in case
                 // of animation)
-                if (!drawLookupTable[dot.mRow][dot.mColumn]) {
-                    break;
+
+                for (int r = 0; integerArrayList.size() > r; r++) {
+                    for (int d = 0; pattern.size() > d; d++) {
+                        if (integerArrayList.get(r) == pattern.get(d).getId()) {
+                            Log.d("inIfda", "r = " + integerArrayList.get(r) + " d = " + pattern.get(d).getId());
+                            if (drawLookupTable[dot.mRow][dot.mColumn]) {
+                                break;
+                            }
+                        }
+
+                    }
                 }
+
+
                 anyCircles = true;
 
                 float centerX = getCenterXForColumn(dot.mColumn);
@@ -1141,7 +1178,7 @@ public class PatternLockView extends View {
                             float size, boolean partOfPattern, float alpha) {
         mDotPaint.setColor(getCurrentColor(partOfPattern));
         mDotPaint.setAlpha((int) (alpha * 255));
-        canvas.drawCircle(centerX, centerY, size / 2, mDotPaint);
+        canvas.drawCircle(centerX, centerY, size / 4, mDotPaint);
     }
 
     /**
