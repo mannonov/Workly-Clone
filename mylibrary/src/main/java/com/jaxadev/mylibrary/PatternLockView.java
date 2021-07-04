@@ -329,8 +329,16 @@ public class PatternLockView extends View {
                 float centerX = getCenterXForColumn(j);
                 float size = dotState.mSize * dotState.mScale;
                 float translationY = dotState.mTranslateY;
-                drawCircle(canvas, (int) centerX, (int) centerY + translationY,
-                        size, drawLookupTable[i][j], dotState.mAlpha);
+                if ((i == 4 && j == 0) || (i == 4 && j == 1) || (i == 4 && j == 2) ||
+                        (i == 3 && j == 2) || (i == 2 && j == 2) ||
+                        (i == 1 && j == 2) || (i == 0 && j == 2) ||
+                        (i == 0 && j == 3) || (i == 0 && j == 4)) {
+                    drawCircle(canvas, (int) centerX, (int) centerY + translationY,
+                            size, drawLookupTable[i][j], dotState.mAlpha);
+                } else {
+                    mPatternDrawLookup[i][j] = false;
+                }
+
             }
         }
 
@@ -343,26 +351,6 @@ public class PatternLockView extends View {
             float lastX = 0f;
             float lastY = 0f;
 
-            ArrayList<Integer> integerArrayList = new ArrayList<>(16);
-
-            integerArrayList.add(0);
-            integerArrayList.add(1);
-            integerArrayList.add(23);
-            integerArrayList.add(5);
-            integerArrayList.add(6);
-            integerArrayList.add(8);
-            integerArrayList.add(9);
-            integerArrayList.add(10);
-            integerArrayList.add(11);
-            integerArrayList.add(13);
-            integerArrayList.add(14);
-            integerArrayList.add(15);
-            integerArrayList.add(16);
-            integerArrayList.add(18);
-            integerArrayList.add(19);
-            integerArrayList.add(24);
-
-
             for (int i = 0; i < patternSize; i++) {
                 Dot dot = pattern.get(i);
 
@@ -370,16 +358,9 @@ public class PatternLockView extends View {
                 // the lookup table (this is only different in case
                 // of animation)
 
-                for (int r = 0; integerArrayList.size() > r; r++) {
-                    for (int d = 0; pattern.size() > d; d++) {
-                        if (integerArrayList.get(r) == pattern.get(d).getId()) {
-                            Log.d("inIfda", "r = " + integerArrayList.get(r) + " d = " + pattern.get(d).getId());
-                            if (drawLookupTable[dot.mRow][dot.mColumn]) {
-                                break;
-                            }
-                        }
 
-                    }
+                if (!drawLookupTable[dot.mRow][dot.mColumn]) {
+                    break;
                 }
 
 

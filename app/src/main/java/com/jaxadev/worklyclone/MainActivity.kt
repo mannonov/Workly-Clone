@@ -1,6 +1,7 @@
 package com.jaxadev.worklyclone
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.jaxadev.mylibrary.PatternLockView
@@ -29,15 +30,19 @@ class MainActivity : AppCompatActivity(), PatternLockViewListener {
 
     override fun onProgress(progressPattern: MutableList<PatternLockView.Dot>?) {
 
+        Log.d("MainActivityda", "onProgress: $progressPattern")
+
     }
 
     override fun onComplete(pattern: MutableList<PatternLockView.Dot>?) {
-        if (PatternLockUtils.patternToString(binding.patternLockView, pattern).equals("0125")) {
+        if (PatternLockUtils.patternToString(binding.patternLockView, pattern).equals("127234")) {
             binding.patternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT)
-            Toast.makeText(applicationContext, "Pattern is correct", Toast.LENGTH_SHORT).show()
-        } else {
-            binding.patternLockView.setViewMode(PatternLockView.PatternViewMode.WRONG)
-            Toast.makeText(applicationContext, "Pattern is correct", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Clock in", Toast.LENGTH_SHORT).show()
+        }
+
+        if (PatternLockUtils.patternToString(binding.patternLockView, pattern).equals("1217222120")) {
+            binding.patternLockView.setViewMode(PatternLockView.PatternViewMode.CORRECT)
+            Toast.makeText(applicationContext, "Clock out", Toast.LENGTH_SHORT).show()
         }
     }
 
