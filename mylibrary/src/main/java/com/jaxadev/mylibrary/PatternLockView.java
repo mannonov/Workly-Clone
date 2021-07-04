@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -333,8 +334,22 @@ public class PatternLockView extends View {
                         (i == 3 && j == 2) || (i == 2 && j == 2) ||
                         (i == 1 && j == 2) || (i == 0 && j == 2) ||
                         (i == 0 && j == 3) || (i == 0 && j == 4)) {
-                    drawCircle(canvas, (int) centerX, (int) centerY + translationY,
-                            size, drawLookupTable[i][j], dotState.mAlpha);
+                    if (i == 2 && j == 2) {
+                        drawCircle(canvas, (int) centerX, (int) centerY + translationY,
+                                250, drawLookupTable[i][j], dotState.mAlpha);
+                    }
+                    if (i == 0 && j == 4) {
+                        drawRedCircle(canvas, (int) centerX, (int) centerY + translationY,
+                                250, drawLookupTable[i][j], dotState.mAlpha);
+                    }
+                    if (i == 4 && j == 0) {
+                        drawGreenCircle(canvas, (int) centerX, (int) centerY + translationY,
+                                250, drawLookupTable[i][j], dotState.mAlpha);
+                    }
+                    if ((i == 4 && j == 1) || (i == 4 && j == 2) || (i == 3 && j == 2) || (i == 1 && j == 2) || (i == 0 && j == 2) || (i == 0 && j == 3)) {
+                        drawCircle(canvas, (int) centerX, (int) centerY + translationY,
+                                size, drawLookupTable[i][j], dotState.mAlpha);
+                    }
                 } else {
                     mPatternDrawLookup[i][j] = false;
                 }
@@ -1155,6 +1170,20 @@ public class PatternLockView extends View {
         }
     }
 
+    private void drawRedCircle(Canvas canvas, float centerX, float centerY,
+                               float size, boolean partOfPattern, float alpha) {
+        mDotPaint.setColor(Color.parseColor("#FF0000"));
+        mDotPaint.setAlpha((int) (alpha * 255));
+        canvas.drawCircle(centerX, centerY, size / 4, mDotPaint);
+    }
+
+    private void drawGreenCircle(Canvas canvas, float centerX, float centerY,
+                                 float size, boolean partOfPattern, float alpha) {
+        mDotPaint.setColor(Color.parseColor("#00FF00"));
+        mDotPaint.setAlpha((int) (alpha * 255));
+        canvas.drawCircle(centerX, centerY, size / 4, mDotPaint);
+    }
+
     private void drawCircle(Canvas canvas, float centerX, float centerY,
                             float size, boolean partOfPattern, float alpha) {
         mDotPaint.setColor(getCurrentColor(partOfPattern));
@@ -1362,9 +1391,9 @@ public class PatternLockView extends View {
     }
 
     public static class DotState {
-        float mScale = 1.0f;
+        float mScale = 4.0f;
         float mTranslateY = 0.0f;
-        float mAlpha = 1.0f;
+        float mAlpha = 4.0f;
         float mSize;
         float mLineEndX = Float.MIN_VALUE;
         float mLineEndY = Float.MIN_VALUE;
